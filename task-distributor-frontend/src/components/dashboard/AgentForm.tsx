@@ -1,15 +1,17 @@
 import React, { useState, FormEvent } from 'react';
 import { createAgent } from '../../services/agent.service';
-import { User, UserPlus, Mail, Smartphone, Lock } from 'lucide-react';
+import { User, UserPlus, Mail, Lock } from 'lucide-react';
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css'; // Import the styles
+
 interface AgentFormProps {
   setToast: React.Dispatch<React.SetStateAction<{ message: string; type: 'success' | 'error' } | null>>;
 }
 
-
-const AgentForm: React.FC <AgentFormProps>= ({ setToast }) => {
+const AgentForm: React.FC<AgentFormProps> = ({ setToast }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [mobile, setMobile] = useState('');
+  const [mobile, setMobile] = useState(''); // This will now store the full phone number with country code
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -29,7 +31,7 @@ const AgentForm: React.FC <AgentFormProps>= ({ setToast }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="text-black space-y-4 ">
+    <form onSubmit={handleSubmit} className="text-black space-y-4">
       {error && (
         <div className="bg-red-50 text-red-700 p-3 rounded-md text-sm">
           {error}
@@ -60,7 +62,7 @@ const AgentForm: React.FC <AgentFormProps>= ({ setToast }) => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="John Doe"
+            placeholder="john.doe@example.com"
             required
           />
         </div>
@@ -68,12 +70,14 @@ const AgentForm: React.FC <AgentFormProps>= ({ setToast }) => {
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Mobile No.</label>
         <div className="relative">
-          <Smartphone className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" />
-          <input
+          {/* <Smartphone className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2" /> */}
+          <PhoneInput
+            international
+            defaultCountry="IN" // Set a default country
             value={mobile}
-            onChange={(e) => setMobile(e.target.value)}
+            onChange={(value) => setMobile(value || '')} // Update the mobile state
             className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="John Doe"
+            placeholder="Enter phone number"
             required
           />
         </div>
@@ -87,16 +91,14 @@ const AgentForm: React.FC <AgentFormProps>= ({ setToast }) => {
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
             className="pl-10 pr-4 py-2 w-full border rounded-md focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-            placeholder="John Doe"
+            placeholder="Enter password"
             required
           />
         </div>
       </div>
-      {/* similar structure */}
-
       <button
         type="submit"
-        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center"
+        className="w-full bg-violet-600 text-white py-2 px-4 rounded-md hover:bg-violet-700 transition-colors flex items-center justify-center"
       >
         <UserPlus className="h-5 w-5 mr-2" />
         Create Agent

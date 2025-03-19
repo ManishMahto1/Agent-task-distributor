@@ -9,18 +9,26 @@ const LoginForm: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // Loading state for spinner
   const dispatch = useDispatch();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true); // Start loading
+    setError(''); // Clear previous errors
+
     try {
       const { token } = await login(email, password);
       dispatch(setCredentials({ token }));
-      window.location.href = '/dashboard'; // Redirect after login
-      setToast({ message: 'Action completed successfully!', type: 'success' })
+      setToast({ message: 'Login successful!', type: 'success' });
+      setTimeout(() => {
+        window.location.href = '/dashboard'; // Redirect after login
+      }, 1000); // Delay redirect to show success toast
     } catch {
       setError('Invalid credentials');
-      setToast({ message: 'Login Failed', type: 'error' })
+      setToast({ message: 'Login failed. Please try again.', type: 'error' });
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -52,11 +60,37 @@ const LoginForm: React.FC = () => {
               className="text-black mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
+          
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            disabled={loading} // Disable button when loading
+            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center"
           >
-            Login
+            {loading ? (
+              // Spinner animation
+              <svg
+                className="animate-spin h-5 w-5 text-white"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            ) : (
+              'Login'
+            )}
           </button>
         </form>
       </div>

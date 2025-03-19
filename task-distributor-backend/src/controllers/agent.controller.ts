@@ -6,7 +6,7 @@ import { CustomError } from '../utils/customError';
 // Create a new agent
 export const createAgent = async (req: Request, res: Response) => {
   const { name, email, mobile, password } = req.body;
-console.log( req.body);
+
 
   try {
     const existingAgent = await Agent.findOne({ email });

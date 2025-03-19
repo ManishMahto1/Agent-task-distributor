@@ -1,6 +1,6 @@
 import React from 'react';
-import AgentList from '../components/dashboard/AgentList';
-import { Users } from 'lucide-react';
+/* import AgentList from '../components/dashboard/AgentList'; */
+import { Users,ListChecks } from 'lucide-react';
 
 const AgentManagementPage: React.FC = () => {
   return (
@@ -21,7 +21,7 @@ const AgentManagementPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">Total Agents</p>
-                <p className="text-2xl font-bold mt-1">24</p>
+                <p className="text-2xl font-bold mt-1">5</p>
               </div>
               <Users className="h-8 w-8 text-green-500 bg-green-100 p-1.5 rounded-full" />
             </div>
@@ -30,7 +30,7 @@ const AgentManagementPage: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-500">Active Today</p>
-                <p className="text-2xl font-bold mt-1">18</p>
+                <p className="text-2xl font-bold mt-1">2</p>
               </div>
               <Users className="h-8 w-8 text-blue-500 bg-blue-100 p-1.5 rounded-full" />
             </div>
@@ -38,20 +38,20 @@ const AgentManagementPage: React.FC = () => {
           <div className="bg-white p-4 rounded-xl shadow-sm">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-500">Available Slots</p>
+                <p className="text-sm text-gray-500">All Tasks</p>
                 <p className="text-2xl font-bold mt-1">6</p>
               </div>
-              <Users className="h-8 w-8 text-purple-500 bg-purple-100 p-1.5 rounded-full" />
+              <ListChecks className="h-8 w-8 text-purple-500 bg-purple-100 p-1.5 rounded-full" />
             </div>
           </div>
         </div>
 
 
         {/* Agent List Component */}
-        <div className="bg-white  overflow-hidden">
+      {/*   <div className="bg-white  overflow-hidden">
           <AgentList />
         </div>
-
+ */}
        
       </div>
     </div>

@@ -75,7 +75,7 @@ const FileUpload: React.FC <FileUploadProps>= ({setToast }) => {
 
       <button
         type="submit"
-        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition-colors flex items-center justify-center"
+        className="w-full bg-violet-600 text-white py-2 px-4 rounded-md hover:bg-violet-700 transition-colors flex items-center justify-center"
         disabled={!file}
       >
         <UploadCloud className="h-5 w-5 mr-2" />

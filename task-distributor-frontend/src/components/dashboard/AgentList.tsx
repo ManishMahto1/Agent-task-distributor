@@ -1,25 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store/store';
-import { setAgents } from '../../store/slices/agentSlice';
-import { getAgents } from '../../services/agent.service';
-import { deleteAgent } from '../../services/agent.service';
-import { motion , AnimatePresence} from 'framer-motion';
+import { setAgents, deleteAgent as deleteAgentAction, updateAgent as updateAgentAction } from '../../store/slices/agentSlice';
+import { getAgents, deleteAgent, updateAgent } from '../../services/agent.service';
+import { motion, AnimatePresence } from 'framer-motion';
 import { User } from 'lucide-react';
-import { deleteAgent as deleteAgentAction } from '../../store/slices/agentSlice';
+import { IAgent } from '../../types/agent';
+import UpdateAgentModal from './UpdateAgentModal';
 
 const AgentList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const agents = useSelector((state: RootState) => state.agents.agents);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState<IAgent | null>(null);
 
+  // Fetch agents on component mount
   useEffect(() => {
     const loadAgents = async () => {
       try {
         const agents = await getAgents();
-        console.log(agents);
-        
         dispatch(setAgents(agents));
-        
       } catch (error) {
         console.error('Failed to fetch agents:', error);
       }
@@ -27,16 +27,34 @@ const AgentList: React.FC = () => {
 
     loadAgents();
   }, [dispatch]);
-  
+
+  // Handle agent deletion
   const handleDelete = async (id: string) => {
     try {
       await deleteAgent(id);
       dispatch(deleteAgentAction(id));
     } catch (error) {
       console.error('Failed to delete agent:', error);
-
     }
   };
+
+  // Handle agent edit
+  const handleEdit = (agent: IAgent) => {
+    setSelectedAgent(agent);
+    setModalOpen(true);
+  };
+
+  // Handle agent update
+  const handleSaveAgent = async (updatedAgent: IAgent) => {
+    try {
+      const res = await updateAgent(updatedAgent._id, updatedAgent);
+      dispatch(updateAgentAction(res)); // Update Redux store
+      setModalOpen(false); // Close modal after save
+    } catch (err) {
+      console.error('Failed to update agent:', err);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center mb-6">
@@ -62,10 +80,13 @@ const AgentList: React.FC = () => {
                   <p className="text-violet-500">{agent.mobile}</p>
                 </div>
                 <div className="flex gap-3">
-                  <button className="text-violet-600 hover:text-violet-800">
+                  <button
+                    onClick={() => handleEdit(agent)}
+                    className="text-violet-600 hover:text-violet-800"
+                  >
                     Edit
                   </button>
-                  <button 
+                  <button
                     onClick={() => handleDelete(agent._id)}
                     className="text-red-500 hover:text-red-700"
                   >
@@ -77,9 +98,16 @@ const AgentList: React.FC = () => {
           ))}
         </AnimatePresence>
       </div>
+
+      {/* Update Agent Modal */}
+      <UpdateAgentModal
+        isOpen={isModalOpen}
+        onClose={() => setModalOpen(false)}
+        agent={selectedAgent}
+        onSave={handleSaveAgent}
+      />
     </div>
   );
 };
 
 export default AgentList;
-
