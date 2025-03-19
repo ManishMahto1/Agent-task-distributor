@@ -1,10 +1,28 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-// https://vite.dev/config/
+import { visualizer } from 'rollup-plugin-visualizer'
+
 export default defineConfig({
   plugins: [react(),
-    tailwindcss()
+    tailwindcss(),
+    visualizer()
   ],
+  build: {
+    chunkSizeWarningLimit: 1000, // Increase warning limit to 1000 kB
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Split vendor modules into separate chunk
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          // Split large third-party modules
+          lucide: ['lucide-react'],
+          framer: ['framer-motion'],
+          redux: ['@reduxjs/toolkit', 'react-redux']
+          
+        }
+      }
+    }
+  }
   
 })
