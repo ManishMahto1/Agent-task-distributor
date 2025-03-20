@@ -1,7 +1,10 @@
 import axios from 'axios';
 import { IAgent } from '../types/agent';
 
-const BaseURL = 'http://localhost:5000/api/agents';
+//const BaseURL = `http://localhost:5000/api/agents`;
+const BaseURL = `https://agent-task-distributor.onrender.com/api/agents`;
+
+//https://agent-task-distributor.onrender.com/api/agents
 export const createAgent = async (agent: Omit<IAgent, '_id'>): Promise<IAgent> => {
   const response = await axios.post(BaseURL, agent, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ITask } from '../types/task';
-const BaseURL = 'http://localhost:5000/';
+//const BaseURL = 'http://localhost:5000/';
+const BaseURL = `https://agent-task-distributor.onrender.com/`;
 
 export const uploadTasks = async (file: File): Promise<ITask[]> => {
   const formData = new FormData();

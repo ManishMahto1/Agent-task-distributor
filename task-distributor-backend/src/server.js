@@ -13,11 +13,16 @@ app.use(bodyParser.json()); // Parse JSON data
 app.use(bodyParser.urlencoded({ extended: false })); // Parse URL-encoded data
 app.use(express.json());
 // Configure CORS to allow requests from the frontend origin
-app.use(cors({
+/* app.use(cors({
     origin: 'http://localhost:5173', // Exact origin without trailing slash
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 }));
+ */
+app.use(cors({
+    origin: 'https://agent-task-distributor.vercel.app', // Your frontend URL
+    credentials: true,
+  }));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/agents', agentRoutes);
