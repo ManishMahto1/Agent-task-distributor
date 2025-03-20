@@ -20,7 +20,7 @@ app.use(express.json());
 }));
  */
 app.use(cors({
-    origin: 'https://agent-task-distributor.vercel.app', // Your frontend URL
+    origin: 'https://task-distributor.netlify.app', // Your frontend URL
     credentials: true,
   }));
 // Routes
