@@ -1,45 +1,22 @@
-import { Task } from '../types';
-import Agent from '../models/Agent.model';
-
-export const distributeTasks = (tasks: Task[], agents: Task[]) => {
-  if (agents.length === 0) {
-    throw new Error('No agents available for task distribution');
-  }
-
-  const distribution: Array<Task & { agent: string }> = [];
-  const agentCount = agents.length;
-  let agentIndex = 0;
-
-  tasks.forEach((task) => {
-    const agentId = agents[agentIndex]._id.toString();
-    
-    distribution.push({
-      ...task,
-      agent: agentId,
-      phone: Number(task.phone), // Ensure phone is stored as number
-      assignedAt: new Date()
+export const distributeTasks = (tasks, agents) => {
+    if (agents.length === 0) {
+        throw new Error('No agents available for task distribution');
+    }
+    const distribution = [];
+    const agentCount = agents.length;
+    let agentIndex = 0;
+    tasks.forEach((task) => {
+        const agentId = agents[agentIndex]._id.toString();
+        distribution.push({
+            ...task,
+            agent: agentId,
+            phone: Number(task.phone), // Ensure phone is stored as number
+            assignedAt: new Date()
+        });
+        agentIndex = (agentIndex + 1) % agentCount;
     });
-
-    agentIndex = (agentIndex + 1) % agentCount;
-  });
-
-  return distribution;
+    return distribution;
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* import { IAgent } from '../models/Agent.model'; // Import the interface
 import { Task } from '../types';
 
@@ -61,4 +38,4 @@ export const distributeTasks = (tasks: Task[], agents: IAgent[]) => {
 
   // Flatten the distributed tasks into a single array
   return Object.values(distribution).flat();
-}; */
+}; */ 
